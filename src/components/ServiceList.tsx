@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  BackgroundFooter,
   Btn,
   Container,
   FooterContainer,
@@ -41,9 +42,9 @@ const ServiceList: React.FC<ServiceListProps> = ({
   currencyCode,
   setSelectedServices,
   setIsServiceListOpen,
+  setSelectedItems,
+  selectedItems,
 }) => {
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-
   const handleItemClick = (key: string) => {
     const isSelected = selectedItems.includes(key);
     const newSelectedItems = isSelected
@@ -51,14 +52,15 @@ const ServiceList: React.FC<ServiceListProps> = ({
       : [...selectedItems, key];
 
     setSelectedItems(newSelectedItems);
-
-    const addedServices = Object.fromEntries(
-      Object.entries(items).filter(([key]) => newSelectedItems.includes(key))
-    );
-    setSelectedServices(addedServices);
   };
 
-  console.log("items", items);
+  const handleAddServices = () => {
+    const addedServices = Object.fromEntries(
+      Object.entries(items).filter(([key]) => selectedItems.includes(key))
+    );
+    setSelectedServices(addedServices);
+    setIsServiceListOpen(false);
+  };
 
   return (
     <Container className="popup">
@@ -83,16 +85,16 @@ const ServiceList: React.FC<ServiceListProps> = ({
           </ListContainer>
         ))}
       </ListWrapper>
-      <ServiceFooter bgColor={colors.purple}>
+      <BackgroundFooter bgColor={colors.purple}>
         <p>서비스를 선택하세요(여러 개 선택가능)</p>
         <Btn
           bgColor={colors.lightPurple}
           width={"320px"}
-          onClick={() => setIsServiceListOpen(false)}
+          onClick={handleAddServices}
         >
           완료
         </Btn>
-      </ServiceFooter>
+      </BackgroundFooter>
     </Container>
   );
 };

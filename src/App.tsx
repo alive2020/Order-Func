@@ -11,10 +11,10 @@ const url: string =
 function App() {
   const [isServiceListOpen, setIsServiceListOpen] = useState(false);
   const [isDiscountListOpen, setIsDiscountListOpen] = useState(false);
-  const [selectedServices, setSelectedServices] = useState<any[]>([]); // Replace with service object type
+  const [selectedServices, setSelectedServices] = useState<any[]>([]);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedDiscounts, setSelectedDiscounts] = useState<string[]>([]);
   const [appliedDiscount, setAppliedDiscount] = useState<any>(null);
-  // console.log("isServiceListOpen", isServiceListOpen);
-  // console.log("isDiscountListOpen", isDiscountListOpen);
 
   const [items, setItems] = useState({});
   const [discounts, setDiscounts] = useState({});
@@ -34,11 +34,6 @@ function App() {
       });
   }, []);
 
-  // console.log("items", items);
-  // console.log("discounts", discounts);
-  // console.log("currencyCode", currencyCode);
-  console.log("selectedServices", selectedServices);
-
   return (
     <>
       <h1>Colavo App</h1>
@@ -55,9 +50,20 @@ function App() {
           currencyCode={currencyCode}
           setSelectedServices={setSelectedServices}
           setIsServiceListOpen={setIsServiceListOpen}
+          selectedItems={selectedItems}
+          setSelectedItems={setSelectedItems}
         />
       )}
-      {isDiscountListOpen && <DiscountList discounts={discounts} />}
+      {isDiscountListOpen && (
+        <DiscountList
+          discounts={discounts}
+          currencyCode={currencyCode}
+          setIsDiscountListOpen={setIsDiscountListOpen}
+          setAppliedDiscount={setAppliedDiscount}
+          selectedDiscounts={selectedDiscounts}
+          setSelectedDiscounts={setSelectedDiscounts}
+        />
+      )}
     </>
   );
 }

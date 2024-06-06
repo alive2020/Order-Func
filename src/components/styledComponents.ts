@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Popover } from "rsuite";
 
 import { colors } from "../styles/theme";
 
@@ -24,7 +25,7 @@ export const Container = styled.div`
     bottom: 0;
     margin: auto;
     background-color: white;
-    z-index: 1000; /* Ensure it appears on top */
+    z-index: 1000;
   }
 `;
 
@@ -69,24 +70,23 @@ export const FooterContainer = styled.div`
   position: relative;
   background-color: ${(props) => props.bgColor || "transparant"};
   color: white;
-  /* height: 56px; */
 `;
 
 export const ListWrapper = styled.div`
   height: ${(props) => props.height || "460px"};
   overflow-y: scroll;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
+    display: none;
   }
+  position: relative;
 `;
 
 export const ListContainer = styled(RowContainer)`
   padding: 10px;
   position: relative;
-  /* margin: 10px; */
 `;
 
 export const TextContainer = styled.div`
@@ -108,7 +108,7 @@ export const TextContainer = styled.div`
   }
 `;
 
-export const ServiceFooter = styled(FooterContainer)`
+export const BackgroundFooter = styled(FooterContainer)`
   z-index: -1;
   padding: 0 0 20px 0;
   margin: 0;
@@ -123,5 +123,21 @@ export const ServiceFooter = styled(FooterContainer)`
     font-size: 12px;
     padding-bottom: 0;
     margin-bottom: 0;
+  }
+`;
+
+export const ScrollableContainer = styled.div`
+  height: 100px;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+`;
+
+export const NumberItem = styled.div`
+  padding: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
   }
 `;
