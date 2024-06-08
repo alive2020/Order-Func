@@ -1,12 +1,21 @@
 import styled from "styled-components";
-import { Popover } from "rsuite";
 
 import { colors } from "../styles/theme";
+import { IoClose } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa";
 
 interface BtnProps {
   width?: string;
   bgColor?: string;
   color?: string;
+}
+
+interface FooterContainerProps {
+  bgColor?: string;
+}
+
+interface ListWrapperProps {
+  height?: string;
 }
 
 export const Container = styled.div`
@@ -53,7 +62,36 @@ export const RowContainer = styled.div`
   justify-content: space-between;
 `;
 
+export const CloseIcon = styled(IoClose)`
+  font-size: 36px;
+  color: ${colors.darkGray};
+  transition: opacity 0.6s ease, transform 0.9s ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+`;
+
+export const AddIcon = styled(FaPlus)`
+  font-size: 26px;
+  color: ${colors.darkGray};
+  transition: opacity 0.6s ease, transform 0.9s ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+`;
+
 export const Btn = styled.div<BtnProps>`
+  cursor: pointer;
   border-radius: 10px;
   width: ${(props) => props.width || "180px"};
   padding: 10px;
@@ -61,9 +99,18 @@ export const Btn = styled.div<BtnProps>`
   align-items: center !important;
   background-color: ${(props) => props.bgColor || "transparent"};
   color: ${(props) => props.color || "white"};
+  transition: opacity 0.6s ease, transform 0.9s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    transform: scale(0.93);
+  }
 `;
 
-export const FooterContainer = styled.div`
+export const FooterContainer = styled.div<FooterContainerProps>`
   display: flex;
   flex-direction: column;
   border-top: 1px solid ${colors.gray};
@@ -72,7 +119,7 @@ export const FooterContainer = styled.div`
   color: white;
 `;
 
-export const ListWrapper = styled.div`
+export const ListWrapper = styled.div<ListWrapperProps>`
   height: ${(props) => props.height || "460px"};
   overflow-y: scroll;
   -ms-overflow-style: none;
@@ -126,12 +173,55 @@ export const BackgroundFooter = styled(FooterContainer)`
   }
 `;
 
+export const PopupOutline = styled.div`
+  position: relative;
+  :focus-visible {
+    outline: none;
+  }
+`;
+
+export const Popup = styled.div`
+  background-color: white;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 260px;
+  height: 260px;
+  z-index: 100000;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 0;
+
+  p {
+    text-align: left;
+  }
+`;
+
+export const SelectorBtn = styled.button`
+  :focus,
+  :focus-visible {
+    outline: none !important;
+    outline: 0px;
+  }
+
+  outline: none;
+  &&:hover {
+    border-color: ${colors.purple} !important;
+  }
+`;
+
 export const ScrollableContainer = styled.div`
-  height: 100px;
+  border-top: 1px solid ${colors.gray};
+  border-bottom: 1px solid ${colors.gray};
+  height: 150px;
   overflow-y: scroll;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const NumberItem = styled.div`
@@ -139,5 +229,23 @@ export const NumberItem = styled.div`
   cursor: pointer;
   &:hover {
     background-color: #f0f0f0;
+  }
+`;
+
+export const CountSelectorContainer = styled.div`
+  width: 50px;
+  height: 100px;
+  z-index: 100000;
+  position: relative;
+`;
+
+export const PopupInnerContainer = styled(ListWrapper)`
+  border-top: 1px solid ${colors.gray};
+  border-bottom: 1px solid ${colors.gray};
+  height: 146px;
+
+  h5 {
+    padding: 0;
+    margin: 0;
   }
 `;

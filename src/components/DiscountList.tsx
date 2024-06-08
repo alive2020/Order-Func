@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  AddIcon,
   BackgroundFooter,
   Btn,
+  CloseIcon,
   Container,
   ListContainer,
   ListWrapper,
   RowContainer,
   TextContainer,
 } from "./styledComponents";
-import { formatPrice } from "./utils";
 import { colors } from "../styles/theme";
-import { FaPlus } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
 
-import { IoClose } from "react-icons/io5";
-
+interface Service {
+  count: number;
+  name: string;
+  price: number;
+}
 interface Discount {
   name: string;
   rate: number;
@@ -25,53 +28,72 @@ interface DiscountListProps {
     [key: string]: Discount;
   };
   setIsDiscountListOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  currencyCode: string;
   setAppliedDiscount: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: Discount;
-    }>
+    React.SetStateAction<{ [key: string]: Discount }>
   >;
+  appliedDiscount: {
+    [key: string]: Discount;
+  } | null;
+  selectedServices: {
+    [key: string]: Service;
+  };
 }
 
 const DiscountList: React.FC<DiscountListProps> = ({
   discounts,
   setIsDiscountListOpen,
   setAppliedDiscount,
-  setSelectedDiscounts,
-  selectedDiscounts,
+  appliedDiscount,
+  selectedServices,
 }) => {
-  console.log("discounts", discounts);
+  const [localSelectedDiscounts, setLocalSelectedDiscounts] = useState<
+    string[]
+  >([]);
+
+  useEffect(() => {
+    if (appliedDiscount) {
+      setLocalSelectedDiscounts(Object.keys(appliedDiscount));
+    } else {
+      setLocalSelectedDiscounts([]);
+    }
+  }, [appliedDiscount]);
 
   const handleItemClick = (key: string) => {
-    const isSelected = selectedDiscounts.includes(key);
+    const isSelected = localSelectedDiscounts.includes(key);
     const newSelectedDiscounts = isSelected
-      ? selectedDiscounts.filter((item) => item !== key)
-      : [...selectedDiscounts, key];
+      ? localSelectedDiscounts.filter((item) => item !== key)
+      : [...localSelectedDiscounts, key];
 
-    setSelectedDiscounts(newSelectedDiscounts);
+    setLocalSelectedDiscounts(newSelectedDiscounts);
   };
 
   const handleApplyDiscounts = () => {
     const appliedDiscounts = Object.fromEntries(
       Object.entries(discounts).filter(([key]) =>
-        selectedDiscounts.includes(key)
+        localSelectedDiscounts.includes(key)
       )
     );
-    setAppliedDiscount(appliedDiscounts);
+    const updatedDiscounts = Object.keys(appliedDiscounts).reduce(
+      (acc, key) => {
+        acc[key] = {
+          ...appliedDiscounts[key],
+          applied: selectedServices,
+        };
+        return acc;
+      },
+      {}
+    );
+
+    setAppliedDiscount(updatedDiscounts);
     setIsDiscountListOpen(false);
   };
-
-  console.log("selectedDiscounts", selectedDiscounts);
 
   return (
     <Container className="popup">
       <RowContainer>
-        <IoClose
-          style={{ fontSize: "36px", color: `${colors.darkGray}` }}
-          onClick={() => setIsDiscountListOpen(false)}
-        />
+        <CloseIcon onClick={() => setIsDiscountListOpen(false)} />
         <p>할인</p>
-        <FaPlus style={{ fontSize: "26px", color: `${colors.darkGray}` }} />
+        <AddIcon />
       </RowContainer>
       <ListWrapper height={"520px"}>
         {Object.keys(discounts).map((key) => (
@@ -80,7 +102,7 @@ const DiscountList: React.FC<DiscountListProps> = ({
               <h3>{discounts[key].name}</h3>
               <p>{(discounts[key].rate * 100).toFixed(0)}%</p>
             </TextContainer>
-            {selectedDiscounts.includes(key) && (
+            {localSelectedDiscounts.includes(key) && (
               <FaCheck style={{ color: colors.purple, fontSize: "26px" }} />
             )}
           </ListContainer>

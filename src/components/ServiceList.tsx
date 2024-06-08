@@ -1,62 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BackgroundFooter,
   Btn,
   Container,
-  FooterContainer,
   ListContainer,
   ListWrapper,
   RowContainer,
-  ServiceFooter,
   TextContainer,
+  CloseIcon,
+  AddIcon,
 } from "./styledComponents";
-import { IoClose } from "react-icons/io5";
-import { FaPlus } from "react-icons/fa";
 import { colors } from "../styles/theme";
 import { FaCheck } from "react-icons/fa6";
 import { formatPrice } from "./utils";
 
+interface Service {
+  count: number;
+  name: string;
+  price: number;
+}
 interface ServiceListProps {
   items: {
-    [key: string]: {
-      count: number;
-      name: string;
-      price: number;
-    };
+    [key: string]: Service;
   };
   currencyCode: string;
   setSelectedServices: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: {
-        count: number;
-        name: string;
-        price: number;
-      };
-    }>
+    React.SetStateAction<{ [key: string]: Service }>
   >;
+
   setIsServiceListOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedServices: {
+    [key: string]: Service;
+  };
 }
 
 const ServiceList: React.FC<ServiceListProps> = ({
   items,
   currencyCode,
   setSelectedServices,
+  selectedServices,
   setIsServiceListOpen,
-  setSelectedItems,
-  selectedItems,
 }) => {
-  const handleItemClick = (key: string) => {
-    const isSelected = selectedItems.includes(key);
-    const newSelectedItems = isSelected
-      ? selectedItems.filter((item) => item !== key)
-      : [...selectedItems, key];
+  const [localSelectedItems, setLocalSelectedItems] = useState<string[]>([]);
 
-    setSelectedItems(newSelectedItems);
+  useEffect(() => {
+    setLocalSelectedItems(Object.keys(selectedServices));
+  }, [selectedServices]);
+
+  const handleItemClick = (key: string) => {
+    const isSelected = localSelectedItems.includes(key);
+    const newSelectedItems = isSelected
+      ? localSelectedItems.filter((item) => item !== key)
+      : [...localSelectedItems, key];
+
+    setLocalSelectedItems(newSelectedItems);
   };
 
   const handleAddServices = () => {
     const addedServices = Object.fromEntries(
-      Object.entries(items).filter(([key]) => selectedItems.includes(key))
+      Object.entries(items).filter(([key]) => localSelectedItems.includes(key))
     );
     setSelectedServices(addedServices);
     setIsServiceListOpen(false);
@@ -65,12 +67,9 @@ const ServiceList: React.FC<ServiceListProps> = ({
   return (
     <Container className="popup">
       <RowContainer>
-        <IoClose
-          style={{ fontSize: "36px", color: `${colors.darkGray}` }}
-          onClick={() => setIsServiceListOpen(false)}
-        />
+        <CloseIcon onClick={() => setIsServiceListOpen(false)} />
         <p>시술메뉴</p>
-        <FaPlus style={{ fontSize: "26px", color: `${colors.darkGray}` }} />
+        <AddIcon />
       </RowContainer>
       <ListWrapper height={"520px"}>
         {Object.keys(items).map((key) => (
@@ -79,7 +78,7 @@ const ServiceList: React.FC<ServiceListProps> = ({
               <h3>{items[key].name}</h3>
               <p>{formatPrice(items[key].price, currencyCode)}</p>
             </TextContainer>
-            {selectedItems.includes(key) && (
+            {localSelectedItems.includes(key) && (
               <FaCheck style={{ color: colors.purple, fontSize: "26px" }} />
             )}
           </ListContainer>
