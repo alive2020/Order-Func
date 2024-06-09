@@ -6,12 +6,12 @@ import { FaPlus } from "react-icons/fa";
 
 interface BtnProps {
   width?: string;
-  bgColor?: string;
+  $bgcolor?: string;
   color?: string;
 }
 
 interface FooterContainerProps {
-  bgColor?: string;
+  $bgcolor?: string;
 }
 
 interface ListWrapperProps {
@@ -97,7 +97,7 @@ export const Btn = styled.div<BtnProps>`
   padding: 10px;
   margin: 10px;
   align-items: center !important;
-  background-color: ${(props) => props.bgColor || "transparent"};
+  background-color: ${(props) => props.$bgcolor || "transparent"};
   color: ${(props) => props.color || "white"};
   transition: opacity 0.6s ease, transform 0.9s ease;
 
@@ -115,7 +115,7 @@ export const FooterContainer = styled.div<FooterContainerProps>`
   flex-direction: column;
   border-top: 1px solid ${colors.gray};
   position: relative;
-  background-color: ${(props) => props.bgColor || "transparant"};
+  background-color: ${(props) => props.$bgcolor || "transparant"};
   color: white;
 `;
 

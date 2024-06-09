@@ -84,10 +84,10 @@ const ServiceList: React.FC<ServiceListProps> = ({
           </ListContainer>
         ))}
       </ListWrapper>
-      <BackgroundFooter bgColor={colors.purple}>
+      <BackgroundFooter $bgcolor={colors.purple}>
         <p>서비스를 선택하세요(여러 개 선택가능)</p>
         <Btn
-          bgColor={colors.lightPurple}
+          $bgcolor={colors.lightPurple}
           width={"320px"}
           onClick={handleAddServices}
         >

@@ -229,7 +229,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
                 <Btn
                   style={{ fontWeight: "bold" }}
                   color={colors.white}
-                  bgColor={colors.purple}
+                  $bgcolor={colors.purple}
                   onClick={handleSaveCount}
                 >
                   완료
@@ -278,7 +278,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
                   삭제
                 </Btn>
                 <Btn
-                  bgColor={colors.purple}
+                  $bgcolor={colors.purple}
                   style={{
                     fontWeight: "bold",
                   }}

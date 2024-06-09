@@ -105,7 +105,7 @@ const OrderList: React.FC<OrderListProps> = ({
       <RowContainer>
         <Btn
           style={{ display: "flex", justifyContent: "center" }}
-          bgColor={colors.gray}
+          $bgcolor={colors.gray}
           color={colors.darkGray}
           onClick={() => setIsServiceListOpen(true)}
         >
@@ -114,7 +114,7 @@ const OrderList: React.FC<OrderListProps> = ({
         </Btn>
         <Btn
           style={{ display: "flex", justifyContent: "center" }}
-          bgColor={colors.pink}
+          $bgcolor={colors.pink}
           color={colors.darkPink}
           onClick={() => setIsDiscountListOpen(true)}
         >
@@ -183,7 +183,7 @@ const OrderList: React.FC<OrderListProps> = ({
           <p>합계</p>
           <h3>{formatPrice(finalAmount, currencyCode)}</h3>
         </RowContainer>
-        <Btn bgColor={colors.purple} width={"320px"} color={colors.white}>
+        <Btn $bgcolor={colors.purple} width={"320px"} color={colors.white}>
           다음
         </Btn>
       </FooterContainer>
